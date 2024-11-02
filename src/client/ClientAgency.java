@@ -10,10 +10,22 @@ public class ClientAgency {
         try {
             Registry registry = LocateRegistry.getRegistry("localhost", 1099);
             BankService bankService = (BankService) registry.lookup("BankService");
-            bankService.openAccount("123");
-            bankService.deposit("123", 100);
-            System.out.println("Balance: " + bankService.consultBalance("123"));
+
+            String accountId = "12345";
+            bankService.openAccount(accountId);
+            System.out.println("Conta " + accountId + " aberta.");
+
+            bankService.deposit(accountId, 500.0);
+            System.out.println("Depósito de 500.0 realizado na conta " + accountId);
+
+            bankService.withdraw(accountId, 200.0);
+            System.out.println("Saque de 200.0 realizado na conta " + accountId);
+
+            double saldo = bankService.consultBalance(accountId);
+            System.out.println("Saldo atual da conta " + accountId + ": " + saldo);
+
         } catch (Exception e) {
+            System.err.println("Erro no cliente Agência: " + e.getMessage());
             e.printStackTrace();
         }
     }
