@@ -15,8 +15,8 @@ public class ATMClientCashier {
             System.out.println("Depósito de 300.0 realizado na conta " + accountId);
             bankService.withdraw(accountId, 100.0);
             System.out.println("Saque de 100.0 realizado na conta " + accountId);
-            double saldo = bankService.consultBalance(accountId);
-            System.out.println("Saldo atual da conta " + accountId + ": " + saldo);
+            double currentBalance = bankService.consultBalance(accountId);
+            System.out.println("Saldo atual da conta " + accountId + ": " + currentBalance);
         } catch (Exception e) {
             System.out.println("Erro no cliente Caixa Automático: " + e.getMessage());
             e.printStackTrace();
