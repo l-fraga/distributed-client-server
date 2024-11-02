@@ -11,7 +11,7 @@ public class ATMClientCashier {
             Registry registry = LocateRegistry.getRegistry("localhost", 1099);
             BankService bankService = (BankService) registry.lookup("BankService");
             String accountId = "12345";
-            bankService.deposit(accountId, 300.0);
+            bankService.deposit(accountId, 300.0, "123");
             System.out.println("Depósito de 300.0 realizado na conta " + accountId);
             bankService.withdraw(accountId, 100.0);
             System.out.println("Saque de 100.0 realizado na conta " + accountId);
