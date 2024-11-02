@@ -26,7 +26,7 @@ public class ClientAgency {
 
         } catch (Exception e) {
             System.err.println("Erro no cliente Agência: " + e.getMessage());
-            e.printStackTrace();
+
         }
     }
 }

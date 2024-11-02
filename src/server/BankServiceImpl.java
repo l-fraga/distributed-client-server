@@ -60,7 +60,7 @@ public class BankServiceImpl extends UnicastRemoteObject implements BankService 
     }
 
     @Override
-    public void deposit(String accountID, double amount, String transactionId) throws RemoteException {
+    public void deposit(String accountID, double amount) throws RemoteException {
         this.accountID = accountID;
         this.amount = amount;
         this.transactionId = transactionId;
