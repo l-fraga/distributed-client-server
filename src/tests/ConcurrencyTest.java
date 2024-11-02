@@ -12,6 +12,7 @@ public class ConcurrencyTest {
             BankService bankService = (BankService) registry.lookup("BankService");
 
             String accountId = "12345";
+            bankService.closeAccount(accountId);
             bankService.openAccount(accountId);
 
             Thread t1 = new Thread(() -> {
