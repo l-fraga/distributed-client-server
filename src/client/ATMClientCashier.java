@@ -4,6 +4,7 @@ import interfaces.BankService;
 
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.UUID;
 
 public class ATMClientCashier {
     public static void main(String[] args) {
@@ -11,16 +12,16 @@ public class ATMClientCashier {
             Registry registry = LocateRegistry.getRegistry("localhost", 1099);
             BankService bankService = (BankService) registry.lookup("BankService");
 
-            String contaId = "12345";
+            String accountId = "12345";
+            String transactionId = UUID.randomUUID().toString();
+            bankService.deposit(accountId, 300.0, transactionId);
+            System.out.println("Depósito de 300.0 realizado na conta " + accountId);
 
-            bankService.deposit(contaId, 300.0);
-            System.out.println("Depósito de 300.0 realizado na conta " + contaId);
+            bankService.withdraw(accountId, 100.0, transactionId);
+            System.out.println("Saque de 100.0 realizado na conta " + accountId);
 
-            bankService.withdraw(contaId, 100.0);
-            System.out.println("Saque de 100.0 realizado na conta " + contaId);
-
-            double saldo = bankService.consultBalance(contaId);
-            System.out.println("Saldo atual da conta " + contaId + ": " + saldo);
+            double currentBalance = bankService.consultBalance(accountId);
+            System.out.println("Saldo atual da conta " + accountId + ": " + currentBalance);
 
         } catch (Exception e) {
             System.err.println("Erro no cliente Caixa Automático: " + e.getMessage());
