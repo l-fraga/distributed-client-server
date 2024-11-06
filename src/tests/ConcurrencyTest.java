@@ -22,6 +22,10 @@ public class ConcurrencyTest {
                     System.out.println("[T1] Iniciando depósito de 100 com transactionId: " + transactionId);
                     bankService.deposit(accountId, 100, transactionId);
                     System.out.println("[T1] Depósito de 100 concluído para transactionId: " + transactionId);
+
+                    System.out.println("[T1] Tentando repetir depósito de 100 com o mesmo transactionId para testar idempotência.");
+                    bankService.deposit(accountId, 100, transactionId);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

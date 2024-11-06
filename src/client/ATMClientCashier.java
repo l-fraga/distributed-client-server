@@ -9,39 +9,47 @@ import java.util.UUID;
 public class ATMClientCashier {
     public static void main(String[] args) {
         try {
+            System.out.println("Conectando ao registro RMI na porta 1099...");
             Registry registry = LocateRegistry.getRegistry("localhost", 1099);
             BankService bankService = (BankService) registry.lookup("BankService");
+            System.out.println("Conexão com o serviço BankService realizada com sucesso.");
 
             String accountId = "12345";
 
-
-            String transactionId = UUID.randomUUID().toString();
+            String depositTransactionId = UUID.randomUUID().toString();
             try {
-                System.out.println("Iniciando depósito de 300 na conta " + accountId + " com transactionId: " + transactionId);
-                bankService.deposit(accountId, 300.0, transactionId);
-                System.out.println("Depósito de 300 realizado na conta " + accountId);
+                System.out.println("Tentativa de depósito de 300 na conta " + accountId + " com transactionId: " + depositTransactionId);
+                bankService.deposit(accountId, 300.0, depositTransactionId);
+
+                throw new Exception("Falha simulada após o depósito de 300.");
             } catch (Exception e) {
-                System.out.println("Falha no depósito. Tentando novamente com o mesmo transactionId: " + transactionId);
-                bankService.deposit(accountId, 300.0, transactionId);
-                System.out.println("Depósito de 300 concluído após reenvio.");
+                System.err.println("Erro após o depósito: " + e.getMessage());
+                e.printStackTrace();
             }
 
-            transactionId = UUID.randomUUID().toString();
+            String withdrawTransactionId = UUID.randomUUID().toString();
             try {
-                System.out.println("Iniciando saque de 100 na conta " + accountId + " com transactionId: " + transactionId);
-                bankService.withdraw(accountId, 100.0, transactionId);
-                System.out.println("Saque de 100 realizado na conta " + accountId);
+                System.out.println("Tentativa de saque de 100 na conta " + accountId + " com transactionId: " + withdrawTransactionId);
+                bankService.withdraw(accountId, 100.0, withdrawTransactionId);
+
+
+                throw new Exception("Falha simulada após o saque de 100.");
             } catch (Exception e) {
-                System.out.println("Falha no saque. Tentando novamente com o mesmo transactionId: " + transactionId);
-                bankService.withdraw(accountId, 100.0, transactionId);
-                System.out.println("Saque de 100 concluído após reenvio.");
+                System.err.println("Erro após o saque: " + e.getMessage());
+                e.printStackTrace();
             }
 
-            double currentBalance = bankService.consultBalance(accountId);
-            System.out.println("Saldo final da conta " + accountId + ": " + currentBalance);
+
+            try {
+                double currentBalance = bankService.consultBalance(accountId);
+                System.out.println("Saldo final da conta " + accountId + ": " + currentBalance);
+            } catch (Exception e) {
+                System.err.println("Erro ao consultar o saldo: " + e.getMessage());
+                e.printStackTrace();
+            }
 
         } catch (Exception e) {
-            System.err.println("Erro no cliente ATM: " + e.getMessage());
+            System.err.println("Erro geral no cliente ATM: " + e.getMessage());
             e.printStackTrace();
         }
     }
