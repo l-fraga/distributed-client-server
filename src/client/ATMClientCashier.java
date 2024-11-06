@@ -13,18 +13,35 @@ public class ATMClientCashier {
             BankService bankService = (BankService) registry.lookup("BankService");
 
             String accountId = "12345";
-            String transactionId = UUID.randomUUID().toString();
-            bankService.deposit(accountId, 300.0, transactionId);
-            System.out.println("Depósito de 300.0 realizado na conta " + accountId);
 
-            bankService.withdraw(accountId, 100.0, transactionId);
-            System.out.println("Saque de 100.0 realizado na conta " + accountId);
+
+            String transactionId = UUID.randomUUID().toString();
+            try {
+                System.out.println("Iniciando depósito de 300 na conta " + accountId + " com transactionId: " + transactionId);
+                bankService.deposit(accountId, 300.0, transactionId);
+                System.out.println("Depósito de 300 realizado na conta " + accountId);
+            } catch (Exception e) {
+                System.out.println("Falha no depósito. Tentando novamente com o mesmo transactionId: " + transactionId);
+                bankService.deposit(accountId, 300.0, transactionId);
+                System.out.println("Depósito de 300 concluído após reenvio.");
+            }
+
+            transactionId = UUID.randomUUID().toString();
+            try {
+                System.out.println("Iniciando saque de 100 na conta " + accountId + " com transactionId: " + transactionId);
+                bankService.withdraw(accountId, 100.0, transactionId);
+                System.out.println("Saque de 100 realizado na conta " + accountId);
+            } catch (Exception e) {
+                System.out.println("Falha no saque. Tentando novamente com o mesmo transactionId: " + transactionId);
+                bankService.withdraw(accountId, 100.0, transactionId);
+                System.out.println("Saque de 100 concluído após reenvio.");
+            }
 
             double currentBalance = bankService.consultBalance(accountId);
-            System.out.println("Saldo atual da conta " + accountId + ": " + currentBalance);
+            System.out.println("Saldo final da conta " + accountId + ": " + currentBalance);
 
         } catch (Exception e) {
-            System.err.println("Erro no cliente Caixa Automático: " + e.getMessage());
+            System.err.println("Erro no cliente ATM: " + e.getMessage());
             e.printStackTrace();
         }
     }
